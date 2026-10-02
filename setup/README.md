@@ -65,8 +65,8 @@ priority = "explicit"
 ```
 
 ## License
-This project is maintained by [coela-oss](mailto:to@coela.org) and follows an open-source licensing model.
+This project is maintained by [coela-oss](mailto:maintainer@example.com) and follows an open-source licensing model.
 
 ## Contact
-For inquiries, please contact **coela-oss** at [to@coela.org](mailto:to@coela.org).
+For inquiries, please contact **coela-oss** at [maintainer@example.com](mailto:maintainer@example.com).
 

@@ -90,7 +90,7 @@ bash bazel-5.3.0-installer-linux-x86_64.sh --user
 
 # Poetry
 curl -sSL https://install.python-poetry.org | python3 -
-export PATH="/home/vscode/.local/bin:$PATH"
+export PATH="${HOME}/.local/bin:$PATH"
 
 
 # sudo apt-cache search 2024

@@ -2,9 +2,7 @@
 name = "load-models"
 version = "0.1.0"
 description = ""
-authors = [
-    {name = "coela-oss",email = "to@coela.org"}
-]
+authors = ["HAT Inc. <maintainer@example.com>"]
 readme = "README.md"
 requires-python = "=3.12.9"
 dependencies = [

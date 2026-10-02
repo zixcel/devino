@@ -55,7 +55,7 @@ OpenVINO Model Prediction:
 
 ### Container Build
 * Clone This Repo and Open in VSCode
-  * ```git clone https://github.com/coela-oss/devino.git```
+  * ```git clone https://github.com/zixcel/devino.git```
   * ```code devino```
 * Decide Mount Directory for LLMs
   * Modify [Devcontainer JSON](.devcontainer/devcontainer.json)
@@ -106,16 +106,16 @@ Traceback (most recent call last):
   File "/workspaces/devino/playground/inference/ms_phi4_text_generation.py", line 3, in <module>
     pipeline = transformers.pipeline(
                ^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/vscode/.local/lib/python3.11/site-packages/transformers/pipelines/__init__.py", line 940, in pipeline
+  File "${HOME}/.local/lib/python3.11/site-packages/transformers/pipelines/__init__.py", line 940, in pipeline
     framework, model = infer_framework_load_model(
                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/vscode/.local/lib/python3.11/site-packages/transformers/pipelines/base.py", line 289, in infer_framework_load_model
+  File "${HOME}/.local/lib/python3.11/site-packages/transformers/pipelines/base.py", line 289, in infer_framework_load_model
     model = model_class.from_pretrained(model, **kwargs)
             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/vscode/.local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 564, in from_pretrained
+  File "${HOME}/.local/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 564, in from_pretrained
     return model_class.from_pretrained(
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/vscode/.local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 3535, in from_pretrained
+  File "${HOME}/.local/lib/python3.11/site-packages/transformers/modeling_utils.py", line 3535, in from_pretrained
     raise ImportError(
 ImportError: Using `low_cpu_mem_usage=True` or a `device_map` requires Accelerate: `pip install 'accelerate>=0.26.0'`
 ```

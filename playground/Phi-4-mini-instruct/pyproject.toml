@@ -2,7 +2,7 @@
 name = "phi-4-mini-instruct"
 version = "0.1.0"
 description = ""
-authors = ["coela-oss <to@coela.org>"]
+authors = ["HAT Inc. <maintainer@example.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -20,7 +20,7 @@ intel-extension-for-tensorflow = { version = "2.15.0.2", extras = ["xpu"] }
 tf-keras = "2.15.0"
 
 #openvino-genai = "2024.2.0"
-torch = {path = "/home/vscode/pytorch/dist/torch-2.5.0a0+git32f585d-cp310-cp310-linux_x86_64.whl"}
+torch = {path = "registration/torch.whl"}
 
 [build-system]
 requires = ["poetry-core"]
