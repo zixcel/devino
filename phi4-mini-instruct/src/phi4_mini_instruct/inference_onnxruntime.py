@@ -3,12 +3,6 @@ import onnxruntime_genai as og
 import argparse
 import time
 
-model_id = os.environ['MODEL_ID']
-hf_home = os.environ['HF_NOCACHE_HOME']
-model_id_transformed = model_id.replace("/", "--")
-onnx_model_path = f"{hf_home}/{model_id_transformed}/model.onnx"
-model_home_dir = f"{hf_home}/{model_id_transformed}"
-
 # https://github.com/openvinotoolkit/openvino/pull/29234
 def main(args):
     if args.verbose: print("Loading model...")
@@ -17,8 +11,15 @@ def main(args):
         first_token_timestamp = 0
 
     #config = og.Config(args.model_path)
+    model_home_dir = getattr(args, 'model_path', None) or os.environ['MODEL_DIR']
+    if not os.path.isabs(model_home_dir) or not os.path.isdir(model_home_dir):
+        raise ValueError("MODEL_DIR/model_path must be an existing absolute directory")
     config = og.Config(model_home_dir)
     config.clear_providers()
+    provider = getattr(args, 'execution_provider', None) or os.environ['MODEL_EXECUTION_PROVIDER']
+    if provider not in {"cpu", "cuda", "dml"}:
+        raise ValueError("Unsupported MODEL_EXECUTION_PROVIDER")
+    config.append_provider(provider)
     #if args.execution_provider != "cpu":
     #    if args.verbose: print(f"Setting model to {args.execution_provider}")
     #    config.append_provider(args.execution_provider)

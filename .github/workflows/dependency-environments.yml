@@ -1,0 +1,27 @@
+name: Frozen model dependency environments
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  dependencies:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - name: Install the reviewed uv wheel into isolated tool storage
+        run: |
+          python3 -m venv "$RUNNER_TEMP/reviewed-uv"
+          "$RUNNER_TEMP/reviewed-uv/bin/python" -m pip install --require-hashes --only-binary=:all: --no-deps -r ci/uv-requirements.txt
+          echo "$RUNNER_TEMP/reviewed-uv/bin" >> "$GITHUB_PATH"
+      - name: Resolve frozen environments without models or hardware activation
+        run: |
+          for project in setup load-models phi4-mini-instruct playground/Phi-4-mini-instruct; do
+            uv lock --project "$project" --check --no-build --no-python-downloads
+          done
+          python3 -m unittest discover -s setup/tests
+          bash -n setup/wsl-ubuntu22-setup.sh

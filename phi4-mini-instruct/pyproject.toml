@@ -1,36 +1,17 @@
 [project]
 name = "phi4-mini-instruct"
 version = "0.1.0"
-description = ""
-authors = ["HAT Inc. <maintainer@example.com>"]
+description = "Local OpenVINO and ONNX GenAI inference"
+authors = [{name = "HAT Inc.", email = "maintainer@example.com"}]
 readme = "README.md"
-requires-python = ">=3.11,<4"
+requires-python = ">=3.12,<3.14"
 dependencies = [
-    "torch[xpu] (>=2.6.0,<3.0.0)",
-    "nncf (>=2.15.0,<3.0.0)",
-    "tensorflow (>=2.19.0,<3.0.0)",
-    "onnxruntime-openvino (>=1.20.0,<2.0.0)",
-    "accelerator (>=2024.9.13,<2025.0.0)",
-    "onnx (>=1.17.0,<2.0.0)",
-    "onnxsim (>=0.4.36,<0.5.0)",
-    "onnxruntime-genai (>=0.6.0,<0.7.0)",
-    "openvino-genai (>=2025.2.0.0.dev20250318,<2026.0.0.0)",
-    "openvino (>=2025.2.0.dev20250318,<2026.0.0)",
+    "onnxruntime-genai>=0.17.1,<0.18",
+    "openvino-genai>=2026.4.1.0,<2027",
 ]
 
 [tool.poetry]
-packages = [{include = "phi4_onnx", from = "src"}]
-
-
-[[tool.poetry.source]]
-name = "openvino-nightly"
-url = "https://storage.openvinotoolkit.org/simple/wheels/nightly"
-priority = "supplemental"
-
-
-[tool.poetry.dependencies]
-openvino-genai = {source = "openvino-nightly"}
-openvino = {source = "openvino-nightly"}
+packages = [{include = "phi4_mini_instruct", from = "src"}]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

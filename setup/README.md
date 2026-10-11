@@ -1,72 +1,20 @@
-# Setup Project
+# Explicit model conversion setup
 
-## Overview
-This project provides an automated setup environment for configuring a development environment with Intel OneAPI and PyTorch for XPU. The setup script installs all necessary dependencies and tools required for running machine learning workloads on Intel GPUs.
+This Python environment converts BERT through maintained Transformers, PyTorch
+and OpenVINO. Old TensorFlow/Intel TensorFlow/MKL development dependencies were
+not imported by this implementation and are no longer installed here. GPU driver
+installation and system package changes are separate operator tasks.
 
-## Requirements
+Python 3.12 or 3.13 is required. Use the committed uv.lock with `uv sync --frozen`
+after the applicable build/storage gate passes. This does not install GPU drivers.
+Actual CPU/GPU conversion and inference acceptance remain required.
 
-- Python 3.10.16
-- Poetry (for dependency management)
-- Intel GPU (for XPU support)
-- Ubuntu-based Linux environment (or WSL2 for Windows users)
+Set MODEL_ID, MODEL_REVISION (exact 40-character commit SHA), MODEL_DEVICE,
+MODEL_OUTPUT (absolute .xml path), and MODEL_TEXT, then run
+`uv run --frozen python src/setup/bert_base_uncase.py`.
+The loader disallows remote Python execution and requires safetensors weights.
+Imports do not download/load models. Existing XML/BIN outputs are not overwritten.
+Model text is local inference input and is excluded from configuration repr.
 
-## Installation
-
-**Run setup script**
-   ```sh
-   chmod +x wsl-ubuntu24-setup.sh
-   ./wsl-ubuntu24-setup.sh
-   ```
-
-**Note:** The setup process installs Intel OneAPI, Bazel, Poetry, and various GPU drivers. 
-
-## Building PyTorch for XPU
-
-After completing the setup(activate build environment), you can build PyTorch with XPU support using:
-
-```sh
-python setup.py build
-```
-
-If you do not want to build it:
-
-```sh
-deactivate
-```
-
-**Warning:** The build process is time-consuming and may take several hours, depending on your system's performance.
-
-**Note:** Necessary dependencies and tools already installed.
-
-
-## Dependencies
-This project uses the following dependencies:
-
-- `openvino` (>=2024.1.0, <2025.0.0)
-- `transformers` (>=4.49.0, <5.0.0)
-- `tensorflow` (==2.15.0)
-- `intel-extension-for-tensorflow[xpu]` (>=2.15.0.2, <3.0.0.0)
-- `mkl-static` (>=2024.1.0, <2024.2.0)
-- `mkl-include` (>=2024.1.0, <2024.2.0)
-
-## Poetry Configuration
-The `pyproject.toml` is configured to use Intel's PyTorch XPU sources:
-
-```toml
-[[tool.poetry.source]]
-name = "pytorch-xpu"
-url = "https://download.pytorch.org/whl/xpu"
-priority = "explicit"
-
-[[tool.poetry.source]]
-name = "pytorch-extension-xpu"
-url = "https://pytorch-extension.intel.com/release-whl/stable/xpu/us/"
-priority = "explicit"
-```
-
-## License
-This project is maintained by [coela-oss](mailto:maintainer@example.com) and follows an open-source licensing model.
-
-## Contact
-For inquiries, please contact **coela-oss** at [maintainer@example.com](mailto:maintainer@example.com).
-
+Run backend-free configuration tests with
+`python3 -B -m unittest discover -s tests`.
