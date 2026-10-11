@@ -5,15 +5,6 @@ import os
 import argparse
 import openvino_genai
 
-model_id = os.environ.get('MODEL_ID', None)
-ov_home = os.environ.get('OV_HOME', None)
-
-if not model_id or not ov_home:
-    raise EnvironmentError("Please set environment variables: MODEL_ID and OV_HOME.")
-
-model_id_transformed = model_id.replace("/", "--")
-model_home_dir = os.path.join(ov_home, model_id_transformed)
-
 
 def streamer(subword):
     print(subword, end='', flush=True)
@@ -22,7 +13,10 @@ def streamer(subword):
 
 
 def infer(args):
-    device = 'CPU'  # GPU can be used as well.
+    model_home_dir = os.environ['MODEL_DIR']
+    device = os.environ['MODEL_DEVICE']
+    if not os.path.isabs(model_home_dir) or not os.path.isdir(model_home_dir):
+        raise ValueError("MODEL_DIR must be an existing absolute directory")
     pipe = openvino_genai.LLMPipeline(model_home_dir, device)
 
     config = build_generation_config(
