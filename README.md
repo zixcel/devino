@@ -37,14 +37,18 @@ pre-cancellation and reuse after cancellation. It does not establish useful
 language quality, arbitrary models, GPU compatibility or long-term leak freedom.
 No model weights or native runtime are bundled in the Rust package.
 
-## Conversion status
+## Model preparation
 
-Historical Python experiments are not the Rust API. Their Optimum Intel
-exporter currently excludes the patched Transformers range; do not override
-constraints or run it as a supported secure conversion path. The unresolved
-conversion scope is tracked in [Issue #12](https://github.com/zixcel/devino/issues/12).
-The Rust backend does not claim to implement PyTorch-to-OpenVINO conversion,
-an HTTP model server or automatic GPU activation.
+Use a reviewed preconverted OpenVINO GenAI bundle for text generation.
+The historical Python/PyTorch exporter, model downloads, system-install recipes
+and empty server scaffolding have been retired. Devino does not execute remote
+model code or force incompatible Optimum/Transformers dependencies.
+
+For compatible conventional models, OpenVINO can read ONNX directly through
+Intel's Rust bindings, avoiding an intermediate IR export. This is distinct from
+converting arbitrary PyTorch/LLM models. See [conversion alternatives](docs/model-preparation.md)
+for the evaluated APIs and limits. GPU activation and an HTTP model server are
+outside the supported Rust interface.
 
 [Getting started](docs/getting-started.md) · [source contract](docs/oss-source-contract.md)
 · [security](SECURITY.md) · [Apache-2.0](LICENSE) · [notices](NOTICE)

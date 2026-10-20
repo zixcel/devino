@@ -1,3 +1,4 @@
+mod onnx;
 use devino::{GenerationControl, GenerationOptions, NativeLibraries, OpenVinoCpu, OpenVinoRuntime};
 use std::{error::Error, path::Path, time::Duration};
 use zixcel_local_inference::{
@@ -21,6 +22,7 @@ pub fn run(args: &[String]) -> Result<(), Box<dyn Error>> {
     if !runtime.devices()?.iter().any(|device| device == "CPU") {
         return Err("CPU device unavailable".into());
     }
+    onnx::verify_direct_onnx()?;
     let document = std::fs::read(&args[2])?;
     let bundle = VerifiedModelBundle::verify(
         Path::new(&args[1]),
@@ -67,7 +69,7 @@ pub fn run(args: &[String]) -> Result<(), Box<dyn Error>> {
     }
     println!(
         "{}",
-        serde_json::json!({"state":"complete", "device":"CPU",
+        serde_json::json!({"state":"complete", "directOnnxIdentityMatched":true, "device":"CPU",
         "inputTokens":first.input_tokens,"outputTokens":first.output_tokens,
         "output":first.output,"repeatMatched":true,"preCancelledRejected":true,"outputLimitRejected":true,"postCancelRecovery":true})
     );

@@ -20,11 +20,10 @@ errors must not disclose raw native diagnostics or user prompts. A native
 failure must remain inside the owner's protected worker process. Default tests
 must not exhaust host memory or change host crash collection settings.
 
-Historical Python experiments remain outside the Rust API while their export
-scope is resolved in Issue #12. Their incompatible Optimum/Transformers graph
-is not solved by making Rust tests pass. Do not count a skipped model/device
-case as successful, override dependency constraints or dismiss advisories to
-obtain a green build.
+The historical Python/PyTorch exporter is retired by the owner's scope decision.
+Do not restore it with incompatible dependency overrides. Supported model
+preparation alternatives and their limits are documented separately; no arbitrary
+PyTorch-to-IR conversion or unexecuted export test is claimed.
 
 Package publication, runtime adoption and application deployment are distinct
 acceptance steps. No private central repository or sibling checkout is required

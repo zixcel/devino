@@ -26,7 +26,9 @@ The owner kills and reaps only its exact, unreaped child after 45 seconds.
 CPU generation uses one inference thread and one stream. No GPU is selected,
 no model code is executed, no download or host installation occurs here.
 
-The case checks two equal eight-token generations, actual token usage,
+The case first runs an embedded static F32[2] ONNX Identity graph directly
+through Intel’s Rust Core API and checks two numeric inputs exactly. It then
+checks two equal eight-token generations, actual token usage,
 pre-cancellation rejection, one-byte streaming output rejection and successful
 subsequent generation. It does not prove arbitrary model compatibility,
 mid-call cancellation latency, GPU support or long-term leak freedom.
