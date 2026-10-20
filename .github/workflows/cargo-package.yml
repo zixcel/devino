@@ -1,0 +1,29 @@
+name: Verify Rust backend package
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  cargo-package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      CARGO_BUILD_JOBS: '1'
+      CARGO_INCREMENTAL: '0'
+      CARGO_PROFILE_DEV_DEBUG: '0'
+      CARGO_PROFILE_TEST_DEBUG: '0'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Install declared toolchain
+        run: rustup toolchain install 1.97 --profile minimal --component rustfmt --component clippy
+      - name: Check source and all targets
+        run: |
+          cargo +1.97 fmt --all -- --check
+          cargo +1.97 clippy --locked --all-targets --all-features -- -D warnings
+          cargo +1.97 test --locked --all-features -- --test-threads=1
+      - name: Verify independent public package
+        run: cargo +1.97 package --locked --registry crates-io

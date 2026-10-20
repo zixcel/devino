@@ -1,111 +1,50 @@
 {
   "repository": "zixcel/devino",
-  "purpose": "Experiment with model conversion and local inference setup before adopting a verified feature in another tool.",
-  "responsibility_boundary": "Own the named reusable integration/data mechanism. Product roles/UI and operational approvals stay with consumers; transport/custody reuse managed Crowsi components where capabilities fit. Planning-only APIs must remain clearly distinguished from implemented external operations.",
-  "packages": [],
-  "schema_definitions": [],
+  "purpose": "Protected Rust OpenVINO CPU backend for verified local model bundles",
+  "responsibility_boundary": "Backend-specific native observation and bounded generation; model catalogs/lifecycle and application authority remain external.",
+  "packages": [
+    {
+      "manifest": "Cargo.toml",
+      "name": "devino",
+      "public_api": "src/lib.rs",
+      "native_runtime_required_for": "explicit CPU acceptance only"
+    }
+  ],
   "test_sources": [
-    "load-models/tests/__init__.py",
-    "model-server/tests/__init__.py",
-    "phi4-mini-instruct/tests/__init__.py",
-    "playground/Phi-4-mini-instruct/tests/__init__.py",
-    "playground/device/gpu_devices.py",
-    "setup/tests/__init__.py",
-    "setup/tests/test_model_configuration.py"
+    "tests/control.rs",
+    "src/control.rs",
+    "src/monitor.rs"
   ],
   "example_sources": [
-    "playground/.devcontainer/Dockerfile",
-    "playground/.devcontainer/devcontainer.json",
-    "playground/.devcontainer/setup.sh",
-    "playground/Phi-4-mini-instruct/Makefile",
-    "playground/Phi-4-mini-instruct/README.md",
-    "playground/Phi-4-mini-instruct/phi_4_mini_instruct/__init__.py",
-    "playground/Phi-4-mini-instruct/phi_4_mini_instruct/inference.py",
-    "playground/Phi-4-mini-instruct/phi_4_mini_instruct/load.py",
-    "playground/Phi-4-mini-instruct/pyproject.toml",
-    "playground/Phi-4-mini-instruct/tests/__init__.py",
-    "playground/README.md",
-    "playground/device/estimate_operation_time.py",
-    "playground/device/gpu_devices.py",
-    "playground/inference/ms_phi4_text_generation.py",
-    "playground/inference/qwen2_onnx_text_generation.py",
-    "playground/inference/roberta_text_classification.py",
-    "playground/inference/util.py",
-    "playground/load_llm.sh",
-    "playground/model/cache_dir.py",
-    "playground/model/convert_direct_save.py",
-    "playground/model/convert_text_classification_model.py",
-    "playground/model/convert_text_generation_model.py",
-    "playground/model/download_model.py",
-    "playground/project.sh"
+    "examples/native_cpu.rs",
+    "examples/native_cpu/worker.rs"
   ],
   "workflow_definitions": [
     {
-      "path": ".github/workflows/dependency-environments.yml",
+      "path": ".github/workflows/cargo-package.yml",
       "jobs": [
-        {
-          "job": "dependencies",
-          "condition": null,
-          "runs_on": "ubuntu-24.04",
-          "steps": [
-            {
-              "name": null,
-              "run": null,
-              "uses": "actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
-              "condition": null
-            },
-            {
-              "name": "Install the reviewed uv wheel into isolated tool storage",
-              "run": "python3 -m venv \"$RUNNER_TEMP/reviewed-uv\"\n\"$RUNNER_TEMP/reviewed-uv/bin/python\" -m pip install --require-hashes --only-binary=:all: --no-deps -r ci/uv-requirements.txt\necho \"$RUNNER_TEMP/reviewed-uv/bin\" >> \"$GITHUB_PATH\"\n",
-              "uses": null,
-              "condition": null
-            },
-            {
-              "name": "Resolve frozen environments without models or hardware activation",
-              "run": "for project in setup load-models phi4-mini-instruct playground/Phi-4-mini-instruct; do\n  uv lock --project \"$project\" --check --no-build --no-python-downloads\ndone\npython3 -m unittest discover -s setup/tests\nbash -n setup/wsl-ubuntu22-setup.sh\n",
-              "uses": null,
-              "condition": null
-            }
-          ]
-        }
+        "cargo-package"
       ]
     },
     {
       "path": ".github/workflows/oss-policy.yml",
       "jobs": [
-        {
-          "job": "repository-policy",
-          "condition": null,
-          "runs_on": "ubuntu-latest",
-          "steps": [
-            {
-              "name": null,
-              "run": null,
-              "uses": "actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
-              "condition": null
-            },
-            {
-              "name": "Verify repository policy",
-              "run": "python3 .github/oss-policy-check.py",
-              "uses": null,
-              "condition": null
-            },
-            {
-              "name": "Verify policy regression tests",
-              "run": "cd .github && python3 -m unittest discover -s policy-tests",
-              "uses": null,
-              "condition": null
-            },
-            {
-              "name": "Check policy types",
-              "run": "python3 -m venv \"$RUNNER_TEMP/policy-types\"\n\"$RUNNER_TEMP/policy-types/bin/pip\" install -r .github/policy/requirements.txt\n\"$RUNNER_TEMP/policy-types/bin/mypy\" --strict .github/policy .github/oss-policy-check.py .github/policy-tests\n",
-              "uses": null,
-              "condition": null
-            }
-          ]
-        }
+        "repository-policy"
       ]
+    },
+    {
+      "path": ".github/workflows/dependency-environments.yml",
+      "scope": "historical Python frozen-lock checks; not secure exporter acceptance"
+    },
+    {
+      "path": ".github/workflows/publish-cargo.yml",
+      "jobs": [
+        "contract",
+        "prepare",
+        "publish"
+      ],
+      "activation": "publish remains disabled until explicit registry authentication setup"
     }
   ],
-  "evidence_policy": "Declarations and source paths are not proof of an executed acceptance. Exact CI head and result are recorded separately. No live accounts or production acceptance is inferred."
+  "legacy_scope": "Existing Python experiments are not supported Rust entrypoints. Export scope remains unresolved in owner Issue #12."
 }
