@@ -824,6 +824,8 @@ dependencies = [
 [[package]]
 name = "zixcel-local-inference"
 version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5825d02118011ced16c4efa85e86acc504f1d374510de1c27e9a088ffaac27a6"
 dependencies = [
  "base64",
  "crowsi-transport-foundation",
