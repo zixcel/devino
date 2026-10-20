@@ -74,6 +74,41 @@ jobs:
           path: ${{ runner.temp }}/cargo-release/
           if-no-files-found: error
           retention-days: 7
+  bootstrap-review:
+    needs: prepare
+    if: vars.REGISTRY_PUBLISH_ENABLED != 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    environment: crates-io-public
+    permissions:
+      contents: read
+    steps:
+      - name: Record approval for initial local publication, without registry credentials
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+          RELEASE_TAG: ${{ github.ref_name }}
+          ARCHIVE_NAME: ${{ needs.prepare.outputs.archive-name }}
+          ARCHIVE_SHA256: ${{ needs.prepare.outputs.archive-sha256 }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          receipt = {'schema': 'devino://release/bootstrap-approval/v1',
+              'repository': os.environ['GITHUB_REPOSITORY'], 'source': os.environ['SOURCE_SHA'],
+              'tag': os.environ['RELEASE_TAG'], 'archive': os.environ['ARCHIVE_NAME'],
+              'sha256': os.environ['ARCHIVE_SHA256'], 'published': False}
+          document = json.dumps(receipt, indent=2)
+          Path(os.environ['RUNNER_TEMP'], 'bootstrap-approval.json').write_text(document + '\n')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as output:
+              output.write('Owner approved these bytes for initial local publication. No upload performed.\n')
+              output.write(document + '\n')
+          PY
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: bootstrap-approval-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/bootstrap-approval.json
+          if-no-files-found: error
+          retention-days: 7
   publish:
     needs: prepare
     if: vars.REGISTRY_PUBLISH_ENABLED == 'true'
