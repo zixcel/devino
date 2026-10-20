@@ -1,0 +1,40 @@
+{
+  "checkedOn": "2026-10-20",
+  "source": "25285bfdec09e345760540776444a7bb3a5770f4",
+  "platform": "Linux x86_64 / WSL / Ubuntu 24.04",
+  "nativeDistribution": {
+    "version": "2026.4.1.0",
+    "archiveSha256": "b8ba7b6e5ae7899e63e5e3c7f9d022ad8a4207247521e46c507f6f3ef23ea2c5"
+  },
+  "model": {
+    "kind": "synthetic; not a language-quality test",
+    "revision": "5e45bfe8087902659ac48ff6847a2f242fa3de21",
+    "manifestSha256": "075023db8cf46150574e6183eb88c24d63530c60262619efbe08f1d73a0fd8f5"
+  },
+  "observation": {
+    "device": "CPU",
+    "directOnnxIdentityMatched": true,
+    "inputTokens": 8,
+    "output": "OpenVINO is an open-source",
+    "outputLimitRejected": true,
+    "outputTokens": 8,
+    "postCancelRecovery": true,
+    "preCancelledRejected": true,
+    "repeatMatched": true,
+    "state": "complete"
+  },
+  "maximumResidentSetKiB": 117828,
+  "commonPrerequisite": {
+    "source": "83887f4ccbd97b37ccff6716ffd3580b46adbced",
+    "ciCrateSha256": "5825d02118011ced16c4efa85e86acc504f1d374510de1c27e9a088ffaac27a6",
+    "usedVia": "command-line local development patch; public-registry acceptance pending"
+  },
+  "notEstablished": [
+    "PyTorch or IR file export",
+    "arbitrary ONNX model support",
+    "GPU acceptance",
+    "production HAT runtime adoption",
+    "long-term memory leak freedom",
+    "independent package publication"
+  ]
+}

@@ -1,22 +1,17 @@
-# Using devino
+# Using Devino
 
-Experiment with model conversion and local inference setup before adopting a verified feature in another tool.
+Use the Rust library from a Linux worker owned by your application. Start with
+[the public interface](interface-reference.md) and
+[the explicit CPU consumer example](../examples/native_cpu.rs).
+The example spawns a protected worker; do not load native backends into an
+interactive shell, editor, MCP host or other shared application process.
 
-## Before you start
+Run the default development checks first. Then select and verify a native
+archive and an immutable, licensed model bundle. Follow
+[native acceptance](native-acceptance.md); missing libraries are an error,
+not a successful model test. Loading the OpenVINO entry library alone does
+not prove its GenAI/tokenizer/plugin dependencies are present.
 
-This is an experimental toolset. Hardware, model files and wheel sources are registered inputs; a script or documentation example is not production compatibility evidence.
-
-## First steps
-
-Read the declared configuration and implementation before enabling an operation. Choose an explicitly registered target and review any write or external effect.
-
-## How to assess the result
-
-- Review conversion and environment scripts.
-- Compare explicitly configured local inference experiments.
-
-A passing source-level check establishes only what that check observes. Keep missing configuration, unavailable services and unverified deployment paths visible.
-
-## Continue reading
-
-[Repository overview](../README.md)
+Do not use old system-install commands or add a local dependency patch to a
+release package. The committed dependency must resolve from the public registry
+for an independent consumer. Version declarations are not proof of publication.
