@@ -1,7 +1,7 @@
 name: Dependabot compatible merge
 on:
   workflow_run:
-    workflows: ["Frozen model dependency environments","OSS policy"]
+    workflows: ["Verify Rust backend package","OSS policy"]
     types: [completed]
   workflow_dispatch:
     inputs:
@@ -33,5 +33,5 @@ jobs:
     steps:
       - uses: zixcel/zixcel-repository-security/.github/actions/dependabot-merge@821a96bb26cc41ee6adf5cf54c0532c47d522ce3
         with:
-          required-workflows: '["Frozen model dependency environments","OSS policy"]'
+          required-workflows: '["Verify Rust backend package","OSS policy"]'
           pull-request-number: ${{ github.event.inputs.number || '' }}
